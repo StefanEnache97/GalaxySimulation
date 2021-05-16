@@ -176,12 +176,12 @@ package object barneshut {
       }
 
 
-      var netforcex = 100*(black_matter_force*math.cos(angle_centre)*this.mass).toFloat
-      //println(netforcex)
-      var netforcey = 100*(black_matter_force*math.sin(angle_centre)*this.mass).toFloat
+//      var netforcex = 100*(black_matter_force*math.cos(angle_centre)*this.mass).toFloat
+//      //println(netforcex)
+//      var netforcey = 100*(black_matter_force*math.sin(angle_centre)*this.mass).toFloat
 
-//      var netforcex = 0.0f
-//      var netforcey = 0.0f
+      var netforcex = 0.0f
+      var netforcey = 0.0f
 
       def addForce(thatMass: Float, thatMassX: Float, thatMassY: Float): Unit = {
         val dist = distance(thatMassX, thatMassY, x, y)
