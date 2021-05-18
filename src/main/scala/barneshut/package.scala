@@ -145,35 +145,35 @@ package object barneshut {
     math.sqrt((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0)).toFloat
   }
 
-  var galaxy_centre = (-1250.0f, -600.0f)
+//  var galaxy_centre = (-1250.0f, -600.0f)
 
   class Body(val mass: Float, val x: Float, val y: Float, val xspeed: Float, val yspeed: Float) {
     override def toString = s"mass: ${mass}, x: ${x}, y: ${y}, xspeed: ${xspeed}, yspeed: ${yspeed}"
     def updated(quad: Quad): Body = {
 
-      val alpha: Float = 4443.0f
-      val beta: Float = 10.0f
-      val gamma: Float = 2.02f
-
-      val distance_centre = distance(this.x, this.y, galaxy_centre._1, galaxy_centre._2)
-      val black_matter_mass = math.pow(alpha * (distance_centre / beta), gamma) / (1 + math.pow(alpha * (distance_centre / beta), gamma - 1))
-      val black_matter_force = black_matter_mass / (distance_centre * distance_centre)
-
-      var angle_centre = 0.0
-      val yd = this.y - galaxy_centre._2
-      val xd = this.x - galaxy_centre._1
-      if( xd < 0 && yd < 0) {
-         angle_centre = math.atan(yd / xd) + math.Pi
-      }
-      else if (xd< 0) {
-        angle_centre = math.atan(yd / xd) + math.Pi/2
-      }
-      else if (yd < 0){
-        angle_centre = math.atan(yd / xd) + 3*math.Pi/2
-      }
-      else {
-        angle_centre = math.atan(yd / xd)
-      }
+//      val alpha: Float = 4443.0f
+//      val beta: Float = 10.0f
+//      val gamma: Float = 2.02f
+//
+//      val distance_centre = distance(this.x, this.y, galaxy_centre._1, galaxy_centre._2)
+//      val black_matter_mass = math.pow(alpha * (distance_centre / beta), gamma) / (1 + math.pow(alpha * (distance_centre / beta), gamma - 1))
+//      val black_matter_force = black_matter_mass / (distance_centre * distance_centre)
+//
+//      var angle_centre = 0.0
+//      val yd = this.y - galaxy_centre._2
+//      val xd = this.x - galaxy_centre._1
+//      if( xd < 0 && yd < 0) {
+//         angle_centre = math.atan(yd / xd) + math.Pi
+//      }
+//      else if (xd< 0) {
+//        angle_centre = math.atan(yd / xd) + math.Pi/2
+//      }
+//      else if (yd < 0){
+//        angle_centre = math.atan(yd / xd) + 3*math.Pi/2
+//      }
+//      else {
+//        angle_centre = math.atan(yd / xd)
+//      }
 
 
 //      var netforcex = 100*(black_matter_force*math.cos(angle_centre)*this.mass).toFloat

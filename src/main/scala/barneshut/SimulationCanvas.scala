@@ -9,7 +9,7 @@ class SimulationCanvas(val model: SimulationModel) extends JComponent {
 
   val MAX_RES = 3000
 
-  val pixels = new Array[Int](MAX_RES * MAX_RES)
+  val pixels = new Array[(Int, Double)](MAX_RES * MAX_RES)
 
   override def paintComponent(gcan: Graphics) = {
     super.paintComponent(gcan)
@@ -19,20 +19,26 @@ class SimulationCanvas(val model: SimulationModel) extends JComponent {
     val img = new image.BufferedImage(width, height, image.BufferedImage.TYPE_INT_ARGB)
 
     // clear canvas pixels
-    for (x <- 0 until MAX_RES; y <- 0 until MAX_RES) pixels(y * width + x) = 0
+    for (x <- 0 until MAX_RES; y <- 0 until MAX_RES) pixels(y * width + x) = (0,0)
+
 
     // count number of bodies in each pixel
     for (b <- model.bodies) {
+      val speed = math.sqrt(b.xspeed*b.xspeed + b.yspeed*b.yspeed)
       val px = ((b.x - model.screen.minX) / model.screen.width * width).toInt
       val py = ((b.y - model.screen.minY) / model.screen.height * height).toInt
-      if (px >= 0 && px < width && py >= 0 && py < height) pixels(py * width + px) += 1
+      if (px >= 0 && px < width && py >= 0 && py < height) pixels(py * width + px) =  (pixels(py * width + px)._1 + 1, pixels(py * width + px)._1 + speed)
     }
+
+
 
     // set image intensity depending on the number of bodies in the pixel
     for (y <- 0 until height; x <- 0 until width) {
       val count = pixels(y * width + x)
-      val intensity = if (count > 0) math.min(255, 70 + count * 50) else 0
-      val color = (255 << 24) | (intensity << 16) | (intensity << 8) | intensity
+      val intensity = if (count._1 > 0) math.min(255, 70 + count._1 * 50) else 0
+      val ratio = if(count._2/count._1 >= 100) 1 else count._2/(count._1*100)
+      val color = (255 << 24) | ((intensity*ratio).toInt << 16) | ((intensity/2).toInt << 8) | (intensity/ratio).toInt
+
       img.setRGB(x, y, color)
     }
 
@@ -52,7 +58,7 @@ class SimulationCanvas(val model: SimulationModel) extends JComponent {
     if (model.shouldRenderQuad) {
       g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
       val green = new Color(0, 225, 80, 150)
-      val red = new Color(200, 0, 0, 150)
+      val red = new Color(200, 0, 0, 255)
       g.setColor(green)
       def drawQuad(depth: Int, quad: Quad): Unit = {
         def drawRect(fx: Float, fy: Float, fsz: Float, q: Quad, fill: Boolean = false): Unit = {
